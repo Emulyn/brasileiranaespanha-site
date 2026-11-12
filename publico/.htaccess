@@ -1,0 +1,7 @@
+# Servidores Apache (a maioria das hospedagens compartilhadas)
+ErrorDocument 404 /404.html
+
+# Segurança extra: mesmo que alguém envie por engano a pasta de um curso
+# ainda não lançado, o servidor responde "página não encontrada".
+# Para lançar um curso, apague a linha correspondente.
+RedirectMatch 404 ^/avios-na-pratica(/.*)?$

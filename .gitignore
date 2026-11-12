@@ -1,0 +1,7 @@
+# Rascunhos (ex.: curso "Avios na Prática") NÃO vão para o GitHub nem para o site.
+# Assim nada provisório fica público, mesmo com o repositório público.
+rascunhos/
+
+# Arquivos do sistema e do editor
+.DS_Store
+.vscode/

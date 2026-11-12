@@ -1,0 +1,5 @@
+# Netlify / Cloudflare Pages
+# Segurança extra: responde "página não encontrada" para o curso ainda não lançado.
+# Para lançar o curso, apague as duas linhas abaixo.
+/avios-na-pratica    /404.html  404!
+/avios-na-pratica/*  /404.html  404!

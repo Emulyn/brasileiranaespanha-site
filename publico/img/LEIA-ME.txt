@@ -1,0 +1,13 @@
+FOTOS DO SITE — coloque os arquivos nesta pasta com estes nomes:
+
+emulyn.jpg       Página inicial, topo. Foto sua, vertical (4:5, ex.: 1200 x 1500 px),
+                 com luz natural, num lugar da sua cidade na Espanha.
+emulyn-sobre.jpg Página Minha história. Outra foto sua, vertical, mais próxima e natural.
+dia-a-dia.jpg    Página inicial, seção "Quem sou eu". Horizontal (3:2), um momento da
+                 sua rotina ou da sua cidade.
+compartilhar.jpg Imagem que aparece quando alguém compartilha o link no WhatsApp,
+                 Instagram ou Facebook. Horizontal, 1200 x 630 px. Pode ser uma
+                 foto sua com o nome "Brasileira na Espanha".
+
+Dica: comprima as fotos (ex.: squoosh.app) para o site continuar rápido.
+Enquanto a foto não existir, o site mostra um espaço reservado com a descrição.
