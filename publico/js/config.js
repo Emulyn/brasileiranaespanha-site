@@ -7,10 +7,10 @@
 
 window.CONFIG_SITE = {
   // WhatsApp no formato https://wa.me/34XXXXXXXXX (só números, com código do país)
-  whatsapp: "",
+  whatsapp: "https://wa.me/34681688686?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20tenho%20uma%20d%C3%BAvida%20sobre%20a%20consultoria",
 
   // E-mail de contato (só o endereço, ex.: contato@brasileiranaespanha.es)
-  email: "",
+  email: "brasileiranaespanha@hotmail.com",
 
   // Formspree: endereço do formulário (ex.: "https://formspree.io/f/abcdwxyz")
   // As respostas do cadastro e do "seu caso" chegam no seu e-mail.
