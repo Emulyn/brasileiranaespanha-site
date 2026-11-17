@@ -89,8 +89,6 @@
     var painel;
     if (dados.expectativa === "juridico") {
       painel = $("#resultado-juridico");
-    } else if (dados.expectativa === "fazer" || dados.expectativa === "garantia") {
-      painel = $("#resultado-expectativa");
     } else if (!NOMES[dados.formato]) {
       painel = $("#resultado-nao-sei");
     } else {
