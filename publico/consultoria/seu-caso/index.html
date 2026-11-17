@@ -47,8 +47,8 @@
     <section class="cabecalho-pagina cabecalho-pagina--fluxo" aria-labelledby="titulo-principal">
       <div class="envoltorio estreito">
         <ol class="etapas-fluxo" aria-label="Etapas da contratação"><li class="feita">Cadastro</li><li class="feita">Pagamento</li><li aria-current="step" class="">Seu caso</li><li class="">Agendamento</li></ol>
-        <h1 id="titulo-principal">Obrigada pela confiança! <em>Agora me conta o seu caso.</em></h1>
-        <p class="lead">Quanto mais detalhes, mais a nossa conversa vai ser sobre você. Depois daqui você escolhe o dia e o horário.</p>
+        <h1 id="titulo-principal">Pagamento confirmado! <em>Agora me conta sobre você.</em></h1>
+        <p class="lead">Com estas respostas eu me preparo para a nossa conversa. No final, você escolhe o dia e o horário.</p>
       </div>
     </section>
 
@@ -56,14 +56,17 @@
       <div class="envoltorio estreito">
         <form class="formulario" data-form="caso" novalidate>
           <fieldset>
-            <legend>Para eu te encontrar</legend>
+            <legend>Seus dados</legend>
             <div class="duas">
               <div class="campo-form"><label for="nome">Nome completo *</label><input type="text" id="nome" name="nome" autocomplete="name" required></div>
               <div class="campo-form"><label for="email">E-mail usado no pagamento *</label><input type="email" id="email" name="email" autocomplete="email" required></div>
             </div>
           </fieldset>
 
-          <fieldset>
+          <!-- Formato: vem do link de pagamento (?formato=...). Se vier, aparece só o nome
+               e não dá para trocar. Se não vier, a pessoa escolhe (veja js/fluxo.js). -->
+          <p class="formato-contratado" id="formato-contratado" hidden>Formato contratado: <strong></strong></p>
+          <fieldset id="escolha-formato">
             <legend>Qual formato você contratou? *</legend>
             <div class="opcoes opcoes--linha">
               <label class="opcao"><input type="radio" name="formato" value="essencial" required> Essencial</label>
@@ -72,17 +75,20 @@
             </div>
           </fieldset>
 
+          <!-- Os textos com data-espanha / data-fora mudam conforme onde a pessoa mora
+               (resposta do cadastro). Sem essa informação, fica o texto neutro. -->
           <fieldset>
-            <legend>Com quem você vai (ou veio) para a Espanha?</legend>
+            <legend data-espanha="Com quem você mora na Espanha?" data-fora="Com quem você vai se mudar para a Espanha?">Com quem você mora ou vai se mudar para a Espanha?</legend>
             <div class="opcoes opcoes--linha">
               <label class="opcao"><input type="radio" name="familia" value="sozinho"> Sozinho(a)</label>
-              <label class="opcao"><input type="radio" name="familia" value="casal"> Com cônjuge</label>
+              <label class="opcao"><input type="radio" name="familia" value="casal"> Com cônjuge ou parceiro(a)</label>
               <label class="opcao"><input type="radio" name="familia" value="filhos"> Com filhos</label>
+              <label class="opcao"><input type="radio" name="familia" value="casal-filhos"> Com cônjuge e filhos</label>
             </div>
           </fieldset>
 
           <div class="duas">
-            <div class="campo-form"><label for="cidade">Cidade onde mora ou quer morar</label><input type="text" id="cidade" name="cidade"></div>
+            <div class="campo-form"><label for="cidade" data-espanha="Em que cidade da Espanha você mora?" data-fora="Em que cidade da Espanha quer morar? (se já souber)">Cidade da Espanha onde mora ou quer morar</label><input type="text" id="cidade" name="cidade"></div>
             <div class="campo-form"><label for="profissao">Profissão ou área de estudo</label><input type="text" id="profissao" name="profissao"></div>
           </div>
 
@@ -90,7 +96,7 @@
             <select id="espanhol" name="espanhol"><option value="">Selecione</option><option>Não falo</option><option>Básico</option><option>Intermediário</option><option>Avançado ou fluente</option></select>
           </div>
 
-          <div class="campo-form"><label for="historia">Me conta a sua história e por que a Espanha *</label><textarea id="historia" name="historia" rows="5" required></textarea></div>
+          <div class="campo-form"><label for="historia" data-espanha="Me conta a sua história: há quanto tempo está na Espanha e como tem sido *" data-fora="Me conta a sua história e por que a Espanha *">Me conta a sua história *</label><textarea id="historia" name="historia" rows="5" required></textarea></div>
           <div class="campo-form"><label for="duvidas">Quais são as 3 maiores dúvidas que você quer resolver? *</label><textarea id="duvidas" name="duvidas" rows="4" required></textarea></div>
           <div class="campo-form"><label for="valeu">O que faria você sair da conversa pensando "valeu a pena"?</label><textarea id="valeu" name="valeu" rows="3"></textarea></div>
 

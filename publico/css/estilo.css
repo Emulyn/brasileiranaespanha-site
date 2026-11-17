@@ -581,6 +581,10 @@ button.botao:disabled { opacity: .45; cursor: not-allowed; }
   border: 2px dashed var(--linha); border-radius: 14px; background: #fff; padding: 2rem;
 }
 
+/* Formato contratado (página Seu caso) */
+.formato-contratado { background: #EEF3EA; border: 1.5px solid var(--verde); border-radius: 10px; padding: .9rem 1rem; margin-bottom: 2rem; }
+.formato-contratado strong { color: var(--verde); }
+
 /* Preço antigo riscado (preço de lançamento) */
 .preco-antigo { font-family: var(--sans); font-size: 1rem; font-weight: 500; color: var(--tinta-suave); margin-left: .4rem; }
 .formato--destaque .preco-antigo { color: #CFC5B6; }

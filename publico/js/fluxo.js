@@ -131,7 +131,12 @@
         body: JSON.stringify(dados)
       }).then(function (resp) {
         if (!resp.ok) throw new Error("falha");
-        guardar("cliente", { nome: dados.nome, email: dados.email, whatsapp: dados.whatsapp });
+        var antes = ler("cliente") || {};
+        guardar("cliente", {
+          nome: dados.nome, email: dados.email,
+          whatsapp: dados.whatsapp || antes.whatsapp,
+          mora: dados.mora || antes.mora      // guarda onde mora para a página "Seu caso"
+        });
         if (dados.formato && NOMES[dados.formato]) guardar("formato", dados.formato);
         depoisDeEnviar(tipo, dados, form);
       }).catch(function () {
@@ -174,6 +179,35 @@
     painel.hidden = false;
     painel.focus();
     window.scrollTo({ top: painel.getBoundingClientRect().top + window.scrollY - 120 });
+  }
+
+  /* ---------- Seu caso: formato travado e textos conforme onde mora ---------- */
+  var formatoBox = $("#formato-contratado");
+  if (formatoBox) {
+    // O formato vem do link de pagamento do Stripe (?formato=...), que é mais confiável
+    var pago = formatoUrl && NOMES[formatoUrl] ? formatoUrl : null;
+    if (pago) {
+      $("strong", formatoBox).textContent = NOMES[pago];
+      formatoBox.hidden = false;
+      var escolha = $("#escolha-formato");
+      escolha.hidden = true;
+      escolha.querySelectorAll("input").forEach(function (i) { i.checked = i.value === pago; });
+    }
+    // Número do pagamento no Stripe, para você conferir quem pagou o quê
+    var sessao = params.get("session_id");
+    if (sessao) {
+      var campo = document.createElement("input");
+      campo.type = "hidden"; campo.name = "pagamento_stripe"; campo.value = sessao;
+      formatoBox.closest("form").appendChild(campo);
+    }
+    // Textos diferentes para quem mora na Espanha e para quem vai se mudar
+    var mora = (ler("cliente") || {}).mora;
+    if (mora) {
+      var chave = mora === "espanha" ? "data-espanha" : "data-fora";
+      document.querySelectorAll("[" + chave + "]").forEach(function (el) {
+        el.textContent = el.getAttribute(chave);
+      });
+    }
   }
 
   /* ---------- Agendamento ---------- */
