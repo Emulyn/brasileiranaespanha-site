@@ -18,7 +18,7 @@
 
   /* ---------- Cadastro: opções de ajuda conforme o momento ---------- */
   // Quem marca "Já moro na Espanha" vê opções diferentes de quem ainda vai.
-  var MORA_NA_ESPANHA = ["moro", "organizar"];
+  var MORA_NA_ESPANHA = ["moro"];
   var perguntaAjuda = $("#pergunta-ajuda");
   if (perguntaAjuda) {
     function atualizarAjuda() {
