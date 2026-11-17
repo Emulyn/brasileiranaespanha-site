@@ -210,6 +210,13 @@
     }
   }
 
+  /* ---------- Página final (confirmado): saudação com o nome ---------- */
+  var saudacao = $("[data-saudacao]");
+  if (saudacao) {
+    var primeiro = ((ler("cliente") || {}).nome || "").split(" ")[0];
+    if (primeiro) saudacao.textContent = "Tudo certo, " + primeiro + "!";
+  }
+
   /* ---------- Agendamento ---------- */
   var agenda = $("#agenda");
   if (agenda) {
