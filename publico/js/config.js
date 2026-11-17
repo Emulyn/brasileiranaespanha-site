@@ -31,6 +31,7 @@ agenda: {
   completa: "https://cal.com/brasileiranaespanha/completa",
   acompanhamento: "https://cal.com/brasileiranaespanha/acompanhamento"
 }
+};
 
 /* --------------------------------------------------------------------------
    Daqui para baixo não precisa mexer.
