@@ -577,3 +577,7 @@ button.botao:disabled { opacity: .45; cursor: not-allowed; }
   min-height: 280px; display: grid; place-content: center; text-align: center; gap: .3rem;
   border: 2px dashed var(--linha); border-radius: 14px; background: #fff; padding: 2rem;
 }
+
+/* Preço antigo riscado (preço de lançamento) */
+.preco-antigo { font-family: var(--sans); font-size: 1rem; font-weight: 500; color: var(--tinta-suave); margin-left: .4rem; }
+.formato--destaque .preco-antigo { color: #CFC5B6; }
