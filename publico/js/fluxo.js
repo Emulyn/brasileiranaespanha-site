@@ -250,14 +250,59 @@
         return;
       }
 
-      // Cal.com (ou outra agenda): botão que abre a agenda em uma nova aba
+      // Cal.com: agenda dentro da página. Quando a pessoa termina de agendar,
+      // o Cal.com avisa o site ("bookingSuccessful") e levamos ela para a página final.
+      if (link.indexOf("cal.com") > -1) {
+        var calLink = link.replace(/^https?:\/\/(www\.)?cal\.com\//, "").replace(/[?#].*$/, "");
+        agenda.innerHTML =
+          '<div class="agenda-cal">' +
+            '<p class="rotulo">Formato ' + NOMES[formato] + '</p>' +
+            '<div id="cal-inline" style="width:100%;min-height:640px;overflow:auto"></div>' +
+            '<p class="suave" style="margin-top:1.2rem;font-size:.92rem">A agenda não carregou? <a href="' + url + '" target="_blank" rel="noopener">Abrir em uma nova aba ↗</a></p>' +
+            '<div class="acoes" style="margin-top:1rem"><a class="botao botao--linha" href="../confirmado/">Já marquei o meu horário <span class="seta" aria-hidden="true">→</span></a></div>' +
+          '</div>';
+        carregarCal(calLink, cli);
+        return;
+      }
+
+      // Outra agenda qualquer: botão que abre em uma nova aba
       agenda.innerHTML =
         '<div class="agenda-cal">' +
           '<p class="rotulo">Formato ' + NOMES[formato] + '</p>' +
           '<h2>Última etapa: <em>escolha o seu horário.</em></h2>' +
-          '<p class="lead">A agenda abre em uma nova aba, já com o seu nome e e-mail. Depois de confirmar, você recebe o convite com o link da videochamada.</p>' +
           '<div class="acoes"><a class="botao botao--cheio" href="' + url + '" target="_blank" rel="noopener">Escolher dia e horário <span class="seta" aria-hidden="true">↗</span></a></div>' +
+          '<div class="acoes" style="margin-top:1rem"><a class="botao botao--linha" href="../confirmado/">Já marquei o meu horário <span class="seta" aria-hidden="true">→</span></a></div>' +
         '</div>';
+    }
+
+    // Código oficial de incorporação do Cal.com (embed), adaptado
+    function carregarCal(calLink, cli) {
+      (function (C, A, L) {
+        var p = function (a, ar) { a.q.push(ar); };
+        var d = C.document;
+        C.Cal = C.Cal || function () {
+          var cal = C.Cal; var ar = arguments;
+          if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; }
+          if (ar[0] === L) {
+            var api = function () { p(api, arguments); };
+            var namespace = ar[1]; api.q = api.q || [];
+            if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); }
+            else p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+
+      if (!window.__calIniciado) { Cal("init", { origin: "https://cal.com" }); window.__calIniciado = true; }
+      Cal("inline", {
+        elementOrSelector: "#cal-inline",
+        calLink: calLink,
+        config: { name: cli.nome || "", email: cli.email || "", layout: "month_view" }
+      });
+      var irParaFinal = function () { location.href = "../confirmado/"; };
+      Cal("on", { action: "bookingSuccessful", callback: irParaFinal });
+      Cal("on", { action: "bookingSuccessfulV2", callback: irParaFinal });
     }
     botoes.forEach(function (b) {
       b.addEventListener("click", function () { mostrarAgenda(b.getAttribute("data-escolher-agenda")); });
