@@ -16,6 +16,42 @@
   var formatoUrl = params.get("formato");
   if (formatoUrl && NOMES[formatoUrl]) guardar("formato", formatoUrl);
 
+  /* ---------- Cadastro: opções de ajuda conforme o momento ---------- */
+  // Quem marca "Já moro na Espanha" vê opções diferentes de quem ainda vai.
+  var MORA_NA_ESPANHA = ["moro", "organizar"];
+  var perguntaAjuda = $("#pergunta-ajuda");
+  if (perguntaAjuda) {
+    function atualizarAjuda() {
+      var marcado = document.querySelector('input[name="momento"]:checked');
+      if (!marcado) { perguntaAjuda.hidden = true; return; }
+      var grupo = MORA_NA_ESPANHA.indexOf(marcado.value) > -1 ? "dentro" : "fora";
+      perguntaAjuda.querySelectorAll("[data-para]").forEach(function (label) {
+        var para = label.getAttribute("data-para");
+        var mostrar = para === "todos" || para === grupo;
+        var input = label.querySelector("input");
+        label.hidden = !mostrar;
+        input.disabled = !mostrar;          // opção escondida não é enviada
+        if (!mostrar) input.checked = false; // limpa escolha que não vale mais
+      });
+      perguntaAjuda.hidden = false;
+    }
+    document.querySelectorAll('input[name="momento"]').forEach(function (r) {
+      r.addEventListener("change", atualizarAjuda);
+    });
+
+    // A opção jurídica é sempre sozinha: marcar ela desmarca as outras, e vice-versa
+    perguntaAjuda.addEventListener("change", function (ev) {
+      var alvo = ev.target;
+      if (alvo.name !== "expectativa" || !alvo.checked) return;
+      perguntaAjuda.querySelectorAll('input[name="expectativa"]').forEach(function (outro) {
+        if (outro === alvo) return;
+        var umDelesEJuridico = alvo.value === "juridico" || outro.value === "juridico";
+        if (umDelesEJuridico) outro.checked = false;
+      });
+    });
+    atualizarAjuda();
+  }
+
   /* ---------- Formulários ---------- */
   document.querySelectorAll("form[data-form]").forEach(function (form) {
     var tipo = form.getAttribute("data-form");
@@ -45,13 +81,25 @@
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
       erro.hidden = true;
+      // Checkboxes de ajuda: pelo menos uma marcada (entre as visíveis)
+      var ajudas = form.querySelectorAll('input[name="expectativa"]:not(:disabled)');
+      if (ajudas.length && !form.querySelector('input[name="expectativa"]:checked')) {
+        erro.textContent = "Marque pelo menos uma opção em \"Em que você precisa de ajuda?\".";
+        erro.hidden = false;
+        ajudas[0].focus();
+        return;
+      }
       if (!form.checkValidity()) {
         erro.textContent = "Preencha os campos obrigatórios (*) para continuar.";
         erro.hidden = false;
         form.reportValidity();
         return;
       }
-      var dados = Object.fromEntries(new FormData(form));
+      var fd = new FormData(form);
+      var dados = Object.fromEntries(fd);
+      // Campos com várias escolhas (checkbox): junta todas, separadas por vírgula
+      var escolhas = fd.getAll("expectativa");
+      dados.expectativa = escolhas.join(", ");
       dados.formato = dados.formato || ler("formato") || "";
       dados.etapa = tipo === "cadastro" ? "1 - Cadastro" : "3 - Seu caso";
       dados._subject = (tipo === "cadastro" ? "Novo cadastro: " : "Seu caso (pagou): ") + (dados.nome || "") + (dados.formato ? " · " + (NOMES[dados.formato] || dados.formato) : "");
@@ -87,7 +135,9 @@
     // Cadastro
     form.hidden = true;
     var painel;
-    if (dados.expectativa === "juridico") {
+    var escolhas = dados.expectativa ? dados.expectativa.split(", ") : [];
+    if (escolhas.indexOf("juridico") > -1) {
+      // Visto, documentação ou problema jurídico: sempre indica advogado
       painel = $("#resultado-juridico");
     } else if (!NOMES[dados.formato]) {
       painel = $("#resultado-nao-sei");

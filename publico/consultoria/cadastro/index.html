@@ -84,13 +84,22 @@
             </div>
           </fieldset>
 
-          <fieldset>
-            <legend>Em que você mais precisa de ajuda? *</legend>
+          <!-- As opções aparecem conforme o "momento" escolhido acima (veja js/fluxo.js).
+               data-para="fora"   → quem ainda não mora na Espanha
+               data-para="dentro" → quem já mora na Espanha
+               data-para="todos"  → aparece para todo mundo -->
+          <fieldset id="pergunta-ajuda">
+            <legend>Em que você precisa de ajuda? *</legend>
+            <p class="dica" style="margin:-.4rem 0 .9rem">Pode marcar mais de uma opção. A última (visto, documentação ou jurídico) só pode ser marcada sozinha.</p>
             <div class="opcoes">
-              <label class="opcao"><input type="radio" name="expectativa" value="viver" required> Saber como é a vida real na Espanha antes de decidir</label>
-              <label class="opcao"><input type="radio" name="expectativa" value="filhos"> Planejar a mudança com a minha família e os meus filhos</label>
-              <label class="opcao"><input type="radio" name="expectativa" value="estudar"> Estudar na Espanha e saber por onde começar</label>
-              <label class="opcao"><input type="radio" name="expectativa" value="juridico"> Garantia de visto ou documentação, ou um problema jurídico (recurso, negativa, situação irregular)</label>
+              <label class="opcao" data-para="fora"><input type="checkbox" name="expectativa" value="viver"> Saber como é a vida real na Espanha antes de decidir</label>
+              <label class="opcao" data-para="fora"><input type="checkbox" name="expectativa" value="filhos-mudanca"> Planejar a mudança com a minha família e os meus filhos</label>
+              <label class="opcao" data-para="fora"><input type="checkbox" name="expectativa" value="estudar"> Estudar na Espanha e saber por onde começar</label>
+              <label class="opcao" data-para="dentro"><input type="checkbox" name="expectativa" value="curriculo"> Montar o currículo no formato espanhol e procurar trabalho</label>
+              <label class="opcao" data-para="dentro"><input type="checkbox" name="expectativa" value="cursos"> Descobrir cursos gratuitos e formações na Espanha</label>
+              <label class="opcao" data-para="dentro"><input type="checkbox" name="expectativa" value="filhos-rotina"> Escola, esporte e rotina dos meus filhos na Espanha</label>
+              <label class="opcao" data-para="todos"><input type="checkbox" name="expectativa" value="futebol"> Provas de acesso (pruebas) de futebol para os meus filhos na Espanha</label>
+              <label class="opcao" data-para="todos"><input type="checkbox" name="expectativa" value="juridico"> Garantia de visto ou documentação, ou um problema jurídico (recurso, negativa, situação irregular)</label>
             </div>
           </fieldset>
 

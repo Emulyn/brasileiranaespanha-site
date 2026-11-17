@@ -48,6 +48,9 @@ body {
 
 img { display: block; max-width: 100%; height: auto; }
 
+/* Garante que o atributo hidden sempre esconda (mesmo com display: flex) */
+[hidden] { display: none !important; }
+
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 a:hover { color: var(--pimenton); }
 
