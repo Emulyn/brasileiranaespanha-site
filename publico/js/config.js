@@ -20,9 +20,9 @@ window.CONFIG_SITE = {
   // No Stripe, depois do pagamento, redirecione para:
   //   https://brasileiranaespanha.es/consultoria/seu-caso/
   pagamento: {
-    essencial: "",
-    completa: "",
-    acompanhamento: ""
+    essencial: "https://buy.stripe.com/test_9B6cN51D5eJc7JY5gg9R600",
+    completa: "https://buy.stripe.com/test_14A4gza9B30uggugYY9R602",
+    acompanhamento: "https://buy.stripe.com/test_fZucN581t7gK3tI3889R601"
   },
 
   // Calendly: um evento para cada formato (ex.: "https://calendly.com/seu-usuario/essencial")
