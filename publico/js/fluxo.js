@@ -16,15 +16,31 @@
   var formatoUrl = params.get("formato");
   if (formatoUrl && NOMES[formatoUrl]) guardar("formato", formatoUrl);
 
-  /* ---------- Cadastro: opções de ajuda conforme o momento ---------- */
-  // Quem marca "Já moro na Espanha" vê opções diferentes de quem ainda vai.
-  var MORA_NA_ESPANHA = ["moro"];
+  /* ---------- Cadastro: perguntas conforme "Onde você mora hoje?" ---------- */
+  // Mora na Espanha  → esconde o "momento" e mostra as opções de quem mora aqui.
+  // Brasil ou outro  → mostra o "momento" e as opções de quem ainda vai.
   var perguntaAjuda = $("#pergunta-ajuda");
+  var perguntaMomento = $("#pergunta-momento");
+
+  function mostrarPergunta(fieldset, mostrar) {
+    fieldset.hidden = !mostrar;
+    fieldset.querySelectorAll("input").forEach(function (input) {
+      input.disabled = !mostrar;            // pergunta escondida não é obrigatória nem enviada
+      if (!mostrar) input.checked = false;
+    });
+  }
+
   if (perguntaAjuda) {
     function atualizarAjuda() {
-      var marcado = document.querySelector('input[name="momento"]:checked');
-      if (!marcado) { perguntaAjuda.hidden = true; return; }
-      var grupo = MORA_NA_ESPANHA.indexOf(marcado.value) > -1 ? "dentro" : "fora";
+      var marcado = document.querySelector('input[name="mora"]:checked');
+      if (!marcado) {
+        if (perguntaMomento) mostrarPergunta(perguntaMomento, false);
+        perguntaAjuda.hidden = true;
+        return;
+      }
+      var moraNaEspanha = marcado.value === "espanha";
+      if (perguntaMomento) mostrarPergunta(perguntaMomento, !moraNaEspanha);
+      var grupo = moraNaEspanha ? "dentro" : "fora";
       perguntaAjuda.querySelectorAll("[data-para]").forEach(function (label) {
         var para = label.getAttribute("data-para");
         var mostrar = para === "todos" || para === grupo;
@@ -35,7 +51,7 @@
       });
       perguntaAjuda.hidden = false;
     }
-    document.querySelectorAll('input[name="momento"]').forEach(function (r) {
+    document.querySelectorAll('input[name="mora"]').forEach(function (r) {
       r.addEventListener("change", atualizarAjuda);
     });
 

@@ -73,17 +73,17 @@
             </div>
           </fieldset>
 
-          <fieldset>
+          <!-- Só aparece para quem NÃO mora na Espanha (veja js/fluxo.js) -->
+          <fieldset id="pergunta-momento">
             <legend>Qual é o seu momento em relação à Espanha? *</legend>
             <div class="opcoes">
               <label class="opcao"><input type="radio" name="momento" value="pensando" required> Estou pensando em ir</label>
               <label class="opcao"><input type="radio" name="momento" value="planejando"> Já estou planejando a mudança</label>
-              <label class="opcao"><input type="radio" name="momento" value="moro"> Já moro na Espanha</label>
               <label class="opcao"><input type="radio" name="momento" value="conhecer"> Quero conhecer melhor como é viver na Espanha</label>
             </div>
           </fieldset>
 
-          <!-- As opções aparecem conforme o "momento" escolhido acima (veja js/fluxo.js).
+          <!-- As opções aparecem conforme "Onde você mora hoje?" (veja js/fluxo.js).
                data-para="fora"   → quem ainda não mora na Espanha
                data-para="dentro" → quem já mora na Espanha
                data-para="todos"  → aparece para todo mundo -->
