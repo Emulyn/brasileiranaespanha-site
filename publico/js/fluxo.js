@@ -223,25 +223,44 @@
         return;
       }
       var cli = ler("cliente") || {};
-      var url = link + (link.indexOf("?") > -1 ? "&" : "?") + "hide_gdpr_banner=1" +
-        (cli.nome ? "&name=" + encodeURIComponent(cli.nome) : "") +
-        (cli.email ? "&email=" + encodeURIComponent(cli.email) : "");
-      agenda.innerHTML = '<div class="calendly-inline-widget" data-url="' + url + '" style="min-width:300px;height:720px"></div>' +
-        '<p class="suave" style="margin-top:1rem;font-size:.92rem">A agenda não carregou? <a href="' + url + '" target="_blank" rel="noopener">Abrir em uma nova aba ↗</a></p>';
-      if (!window.Calendly) {
-        var s = document.createElement("script");
-        s.src = "https://assets.calendly.com/assets/external/widget.js";
-        s.async = true;
-        document.body.appendChild(s);
-      } else {
-        window.Calendly.initInlineWidgets();
+      // Nome e e-mail já preenchidos na agenda (Cal.com e Calendly entendem name e email)
+      var url = link + (link.indexOf("?") > -1 ? "&" : "?") +
+        "name=" + encodeURIComponent(cli.nome || "") +
+        "&email=" + encodeURIComponent(cli.email || "");
+
+      if (link.indexOf("calendly.com") > -1) {
+        // Calendly: agenda dentro da página
+        agenda.innerHTML = '<div class="calendly-inline-widget" data-url="' + url + '&hide_gdpr_banner=1" style="min-width:300px;height:720px"></div>' +
+          '<p class="suave" style="margin-top:1rem;font-size:.92rem">A agenda não carregou? <a href="' + url + '" target="_blank" rel="noopener">Abrir em uma nova aba ↗</a></p>';
+        if (!window.Calendly) {
+          var s = document.createElement("script");
+          s.src = "https://assets.calendly.com/assets/external/widget.js";
+          s.async = true;
+          document.body.appendChild(s);
+        } else {
+          window.Calendly.initInlineWidgets();
+        }
+        return;
       }
+
+      // Cal.com (ou outra agenda): botão que abre a agenda em uma nova aba
+      agenda.innerHTML =
+        '<div class="agenda-cal">' +
+          '<p class="rotulo">Formato ' + NOMES[formato] + '</p>' +
+          '<h2>Última etapa: <em>escolha o seu horário.</em></h2>' +
+          '<p class="lead">A agenda abre em uma nova aba, já com o seu nome e e-mail. Depois de confirmar, você recebe o convite com o link da videochamada.</p>' +
+          '<div class="acoes"><a class="botao botao--cheio" href="' + url + '" target="_blank" rel="noopener">Escolher dia e horário <span class="seta" aria-hidden="true">↗</span></a></div>' +
+        '</div>';
     }
     botoes.forEach(function (b) {
       b.addEventListener("click", function () { mostrarAgenda(b.getAttribute("data-escolher-agenda")); });
     });
     var nome = (ler("cliente") || {}).nome;
     if (nome) { var t = $("#titulo-principal"); if (t) t.firstChild.textContent = nome.split(" ")[0] + ", escolha "; }
-    mostrarAgenda(ler("formato") || "essencial");
+    // Se já sabemos o formato (vem do pagamento), não deixa trocar de agenda
+    var formatoSalvo = ler("formato");
+    var seletor = $(".seletor-formato");
+    if (formatoSalvo && NOMES[formatoSalvo] && seletor) seletor.hidden = true;
+    mostrarAgenda(formatoSalvo && NOMES[formatoSalvo] ? formatoSalvo : "essencial");
   }
 })();

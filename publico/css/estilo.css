@@ -588,3 +588,7 @@ button.botao:disabled { opacity: .45; cursor: not-allowed; }
 /* Preço antigo riscado (preço de lançamento) */
 .preco-antigo { font-family: var(--sans); font-size: 1rem; font-weight: 500; color: var(--tinta-suave); margin-left: .4rem; }
 .formato--destaque .preco-antigo { color: #CFC5B6; }
+
+/* Agenda (Cal.com): bloco com o botão */
+.agenda-cal { border: 1.5px solid var(--verde); border-radius: 14px; background: #fff; padding: clamp(1.4rem, 4vw, 2.4rem); }
+.agenda-cal h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); margin-bottom: .8rem; }

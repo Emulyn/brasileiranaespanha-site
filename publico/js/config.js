@@ -25,13 +25,12 @@ window.CONFIG_SITE = {
     acompanhamento: "https://buy.stripe.com/test_fZucN581t7gK3tI3889R601"
   },
 
-  // Calendly: um evento para cada formato (ex.: "https://calendly.com/seu-usuario/essencial")
-  agenda: {
-    essencial: "",
-    completa: "",
-    acompanhamento: ""
-  }
-};
+  // Agenda (Cal.com): um evento para cada formato (ex.: "https://cal.com/seu-usuario/essencial")
+agenda: {
+  essencial: "https://cal.com/brasileiranaespanha/essencial",
+  completa: "https://cal.com/brasileiranaespanha/completa",
+  acompanhamento: "https://cal.com/brasileiranaespanha/acompanhamento"
+}
 
 /* --------------------------------------------------------------------------
    Daqui para baixo não precisa mexer.
