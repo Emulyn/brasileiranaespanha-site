@@ -14,7 +14,7 @@ window.CONFIG_SITE = {
 
   // Formspree: endereço do formulário (ex.: "https://formspree.io/f/abcdwxyz")
   // As respostas do cadastro e do "seu caso" chegam no seu e-mail.
-  formspree: "https://formspree.io/f/xjywwary",,
+  formspree: "https://formspree.io/f/xjywwary",
 
   // Stripe: um Payment Link para cada formato (ex.: "https://buy.stripe.com/xxxx")
   // No Stripe, depois do pagamento, redirecione para:
