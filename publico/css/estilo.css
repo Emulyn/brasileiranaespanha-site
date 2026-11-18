@@ -608,3 +608,6 @@ button.botao:disabled { opacity: .45; cursor: not-allowed; }
 .video-meta { display: block; font-size: .85rem; color: var(--tinta-suave); margin-top: .25rem; }
 @media (max-width: 860px) { .grade-videos { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .grade-videos { grid-template-columns: 1fr; } }
+
+/* Campo anti-robô: fora da tela, invisível para pessoas */
+.armadilha { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }

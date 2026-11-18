@@ -121,6 +121,8 @@
 
           <label class="opcao opcao--aceite"><input type="checkbox" name="aceite" value="sim" required> Li e aceito os termos da consultoria e a <a href="../../aviso-legal/">política de privacidade</a>. Meus dados serão usados só para organizar a consultoria. *</label>
 
+          <!-- Armadilha anti-robô (honeypot): pessoas não veem este campo; robôs preenchem e o Formspree descarta o envio -->
+          <div class="armadilha" aria-hidden="true"><label>Não preencha este campo <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
           <p class="form-erro" role="alert" hidden></p>
           <p class="form-nao-conectado" hidden>Formulário ainda não conectado: falta colocar o endereço do Formspree em <code>js/config.js</code>. Por enquanto nada é enviado.</p>
           <button type="submit" class="botao botao--cheio botao--largo">Enviar cadastro <span class="seta" aria-hidden="true">→</span></button>

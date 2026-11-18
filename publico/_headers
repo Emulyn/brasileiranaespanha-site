@@ -1,0 +1,14 @@
+# Cabeçalhos de segurança (Netlify)
+# Valem para todas as páginas do site.
+/*
+  # Impede que outros sites coloquem o seu dentro de uma moldura (iframe) para enganar pessoas
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'
+  # Impede o navegador de "adivinhar" o tipo de arquivo
+  X-Content-Type-Options: nosniff
+  # Envia menos informação sobre a página de origem para outros sites
+  Referrer-Policy: strict-origin-when-cross-origin
+  # O site não usa câmera, microfone nem localização
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  # Obriga o uso de HTTPS (conexão segura)
+  Strict-Transport-Security: max-age=31536000
