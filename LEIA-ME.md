@@ -1,100 +1,118 @@
 # Site Brasileira na Espanha
 
-## O que vai para o servidor
+Site da consultoria individual, publicado pelo **Netlify** a partir do repositório **github.com/Emulyn/brasileiranaespanha-site**.
+Cada `git push` na branch `main` publica o site automaticamente.
 
-**Só o conteúdo da pasta `publico/`.** Envie o que está dentro dela para a raiz do seu domínio (brasileiranaespanha.es), no lugar dos arquivos atuais.
+## ✅ Lista para finalizar e lançar
+
+### 1. Segurança das contas
+- [ ] Verificação em duas etapas no **GitHub**
+- [ ] Verificação em duas etapas no **Netlify**
+- [ ] Verificação em duas etapas no **Stripe**
+- [ ] Verificação em duas etapas no **Formspree**
+- [ ] Verificação em duas etapas no **Cal.com**
+- [ ] Verificação em duas etapas no **Hotmail**
+
+### 2. Cal.com
+- [ ] Apps → **Zoom** → Install; em cada evento, Location → **Zoom Video**
+- [ ] Availability: **17:00 às 00:00**, fuso **Europe/Madrid**
+- [ ] Conferir o limite de tempo do Zoom grátis (as consultorias têm 60 e 90 min)
+- [ ] Se o plano permitir: exigir **24h de antecedência** para remarcar e cancelar
+
+### 3. Conversa com a gestoría
+- [ ] Alta de **autónoma**: preciso? Tenho direito à tarifa plana?
+- [ ] **Stripe**: posso receber como autónoma? Qual NIF/NIE uso?
+- [ ] **Aviso legal e política de privacidade**: o que precisa constar?
+- [ ] **Cancelamento e devolução**: o que a lei exige para serviços online?
+
+### 4. Depois da gestoría
+- [ ] Preencher o **Aviso legal** (`publico/aviso-legal/index.html`), que é o último campo amarelo do site
+- [ ] **Ativar o Stripe real** e criar os 3 links de pagamento de verdade
+- [ ] Trocar os 3 links `test_` pelos reais em `publico/js/config.js`
+- [ ] Atualizar a regra de cancelamento nas Perguntas frequentes, se a gestoría orientar
+
+### 5. Lançamento
+- [ ] Netlify: **Domain management → Add a domain** → `brasileiranaespanha.es` (DNS externo)
+- [ ] IONOS: registro **A** do `@` → `75.2.60.5` (apagar o AAAA do `@`)
+- [ ] IONOS: **CNAME** do `www` → endereço `.netlify.app` do projeto
+- [ ] Não mexer nos registros **MX** e **TXT** da IONOS
+- [ ] Stripe: trocar o endereço de retorno dos 3 links para
+      `https://brasileiranaespanha.es/consultoria/seu-caso/?formato=FORMATO&session_id={CHECKOUT_SESSION_ID}`
+      (FORMATO = essencial, completa ou acompanhamento)
+- [ ] Netlify: **Make public** (tornar o projeto público)
+- [ ] Teste final de ponta a ponta no domínio
+- [ ] Divulgar! 🎉
+
+## Como a contratação funciona
+
+**Formatos → Cadastro → Pagamento (Stripe) → Seu caso → Agenda (Cal.com) → Página final**
+
+| Etapa | Página | Serviço |
+|---|---|---|
+| Cadastro (filtro) | `consultoria/cadastro/` | Formspree, chega no e-mail |
+| Pagamento | link do Stripe | Stripe, volta para "Seu caso" com `?formato=` e `session_id` |
+| Seu caso | `consultoria/seu-caso/` | Formspree, chega no e-mail com `pagamento_stripe` |
+| Agenda | `consultoria/agendar/` | Cal.com, agenda dentro da página |
+| Página final | `consultoria/confirmado/` | contato: WhatsApp, e-mail e redes |
+
+**Antes de cada consultoria:** procure no painel do Stripe o número `pagamento_stripe` (que chega no e-mail do "Seu caso") e confira se o pagamento existe e é do formato certo. O site não tem servidor, então não consegue conferir sozinho.
+
+## Configuração (um lugar só)
+
+Tudo fica em **`publico/js/config.js`**: WhatsApp, e-mail, Formspree, os 3 links do Stripe e as 3 agendas do Cal.com.
+Cuidado com as vírgulas e com o `};` no final: um erro ali desliga o arquivo inteiro.
+
+**Nunca coloque senhas nem a chave secreta do Stripe (`sk_...`) no site.** O repositório é público.
+
+## Estrutura
 
 ```
-publico/
-  index.html                           → /                (Início)
-  sobre/index.html                     → /sobre/          (Minha história)
-  consultoria/index.html               → /consultoria/    (Visão geral)
-  consultoria/como-funciona/index.html → /consultoria/como-funciona/
-  consultoria/perguntas/index.html     → /consultoria/perguntas/
-  consultoria/formatos/index.html      → /consultoria/formatos/
-  consultoria/cadastro/index.html      → etapa 1 do fluxo (fora do Google)
-  consultoria/seu-caso/index.html      → etapa 3, depois do pagamento (fora do Google)
-  consultoria/agendar/index.html       → etapa 4, agenda (fora do Google)
-  conteudo/index.html                  → /conteudo/       (Vídeos e redes)
-  contato/index.html                   → /contato/
-  aviso-legal/index.html               → /aviso-legal/    (modelo para revisar)
-  404.html, favicon.svg
-  css/estilo.css           → cores, fontes e layout (variáveis no topo)
-  js/config.js             → WhatsApp, e-mail, Formspree, Stripe e Calendly
-  js/fluxo.js              → faz os formulários e a agenda funcionarem (não mexer)
-  img/                     → suas fotos (veja img/LEIA-ME.txt)
-  robots.txt, sitemap.xml  → para o Google (não citam o curso)
-  .htaccess, _redirects    → bloqueio extra do curso no servidor
+publico/                      → vai para o ar (Netlify)
+  index.html                  → Início
+  sobre/                      → Minha história
+  consultoria/                → Visão geral
+  consultoria/formatos/       → Formatos e valores
+  consultoria/como-funciona/  → Como funciona
+  consultoria/perguntas/      → Perguntas frequentes
+  consultoria/cadastro/       → etapa 1 (fora do Google)
+  consultoria/seu-caso/       → etapa 3 (fora do Google)
+  consultoria/agendar/        → etapa 4 (fora do Google)
+  consultoria/confirmado/     → página final (fora do Google)
+  conteudo/                   → Vídeos
+  contato/                    → Contato
+  aviso-legal/                → Aviso legal e privacidade
+  css/estilo.css              → cores e fontes (variáveis no topo)
+  js/config.js                → links e serviços
+  js/fluxo.js                 → lógica dos formulários e da agenda
+  img/                        → fotos
+  _headers                    → cabeçalhos de segurança (Netlify)
+  _redirects, .htaccess       → bloqueio do curso
+  robots.txt, sitemap.xml     → Google
 
-rascunhos/                 → NUNCA enviar para o servidor
-  avios-na-pratica/index.html
+rascunhos/                    → NÃO vai para o GitHub nem para o ar (.gitignore)
+  avios-na-pratica/           → curso bloqueado
 ```
 
-**Atenção:** o menu e o rodapé se repetem em todas as páginas. Se mudar um link do menu, mude nas 8 páginas (no VS Code: Cmd+Shift+H, "substituir em todos os arquivos").
+O menu e o rodapé se repetem em todas as páginas. Para mudar um link em todas de uma vez: **Cmd + Shift + H** no VS Code.
 
-A página antiga `/cadastro` não faz parte do site novo. Se ela continuar no servidor, apague-a ou aponte o link do formulário (em `js/config.js`) para ela só depois que ela estiver enviando os dados de verdade.
+## Ver no computador
 
-## Ver no seu computador
+No VS Code, clique com o botão direito em `publico/index.html` → **Open with Live Server**.
 
-Abra a pasta no VS Code e use a extensão **Live Server** (botão "Go Live") em `publico/index.html`.
+## Atualizar o site
 
-
-## Como ligar o fluxo de contratação
-
-O caminho da cliente é: **Formatos → Cadastro → Pagamento (Stripe) → Seu caso → Agendamento (Calendly)**. Tudo se configura em `publico/js/config.js`.
-
-**1. Formulários (Formspree, grátis até 50 envios por mês)**
-1. Crie uma conta em formspree.io com o seu e-mail.
-2. Clique em "New form", dê o nome "Consultoria" e copie o endereço que aparece (https://formspree.io/f/...).
-3. Cole em `formspree`. O cadastro e o "seu caso" passam a chegar no seu e-mail, com o assunto já dizendo a etapa e o formato.
-
-**2. Pagamento (Stripe)**
-1. Crie a conta em stripe.com (a Stripe pede seus dados fiscais).
-2. Em Catálogo de produtos, crie os 3 produtos com os preços.
-3. Em Links de pagamento, crie um link para cada produto. Na aba "Após o pagamento", escolha redirecionar para `https://brasileiranaespanha.es/consultoria/seu-caso/`.
-4. Cole cada link em `pagamento.essencial`, `pagamento.completa` e `pagamento.acompanhamento`.
-
-**3. Agenda (Calendly)**
-1. Crie a conta em calendly.com e um tipo de evento para cada formato, com a duração certa.
-2. Cole os links em `agenda.essencial`, `agenda.completa` e `agenda.acompanhamento`.
-
-**Importante:** como o site é simples (sem servidor), ele não consegue conferir se a pessoa pagou antes de abrir a agenda. Antes de cada conversa, confira no Stripe se o pagamento entrou. Se um dia quiser automático, o Calendly pago consegue cobrar no próprio agendamento.
-
-## Campos que você precisa preencher
-
-Os campos aparecem no site com fundo amarelo e entre colchetes. Para achar todos, procure por `[` no VS Code (Cmd+Shift+F).
-
-**Em `js/config.js` (vale para todas as páginas):**
-- `whatsapp`: link no formato https://wa.me/34XXXXXXXXX
-- `formspree`, `pagamento` e `agenda`: veja "Como ligar o fluxo de contratação"
-- `email`: e-mail de contato
-
-**Minha história (`publico/sobre/index.html`):** sua história em 4 campos.
-
-**Vídeos (`publico/conteudo/index.html`):** títulos dos 3 vídeos em destaque.
-
-**Aviso legal (`publico/aviso-legal/index.html`):** nome, NIF/NIE, endereço; revisar com um profissional.
-
-**Início (`publico/index.html`):** legenda da foto e descrição da foto do dia a dia.
-
-**Consultoria, Como funciona e Perguntas (`publico/consultoria/...`):**
-- [PREÇO] (aparece 2 vezes)
-- [FORMA DE PAGAMENTO] (2 vezes) e [COMO É FEITO O PAGAMENTO]
-- [DIAS E HORÁRIOS DISPONÍVEIS]
-- [OUTRO PERFIL QUE VOCÊ ATENDE], [OUTRO TEMA], [DESCRIÇÃO DO TEMA] (ou apague essas linhas)
-- [COMO MARCAR: pelo WhatsApp ou pela agenda online]
-- [FORMATO E PRAZO DE ENVIO DO RESUMO] e [O QUE O RESUMO TRAZ E QUANDO É ENVIADO]
-- [PLATAFORMA: Google Meet, Zoom…]
-- [SUA POLÍTICA DE REMARCAÇÃO E CANCELAMENTO]
-
-**Fotos (`publico/img/`):**
-- `emulyn.jpg`: foto sua vertical para o topo da página inicial
-- `emulyn-sobre.jpg`: outra foto sua, mais próxima, para Minha história
-- `dia-a-dia.jpg`: foto horizontal da sua rotina ou cidade
-- `compartilhar.jpg`: imagem 1200 x 630 px para a prévia de links
+```bash
+git add .
+git commit -m "o que você mudou"
+git push
+```
 
 ## Curso "Avios na Prática": bloqueado
 
-A página existe só em `rascunhos/avios-na-pratica/`, fora da pasta `publico`. Ela não está no menu, no rodapé nem no sitemap, tem `noindex`, e o servidor responde "página não encontrada" para `/avios-na-pratica` mesmo se a pasta for enviada por engano.
+A página existe só em `rascunhos/avios-na-pratica/`, que fica fora da pasta `publico` e fora do GitHub. Para lançar, siga os passos do comentário no início desse arquivo.
 
-**Para lançar:** siga os 6 passos escritos no comentário do início de `rascunhos/avios-na-pratica/index.html`.
+## Ideias para o futuro (Fase 3 do projeto)
+
+- Um servidor próprio (por exemplo, em Java) com banco de dados para guardar os cadastros
+- Conferir o pagamento no Stripe automaticamente antes de liberar a agenda
+- Um painel com login para ver os clientes e a etapa de cada um
